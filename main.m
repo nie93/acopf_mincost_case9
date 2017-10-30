@@ -35,6 +35,9 @@ numOfBranches = size(mpc.branch,1);
 voltMax = mpc.bus(:,12);
 voltMin = mpc.bus(:,13);
 
+lineRatings = [100 50 100 35 50 50 50 50 50 50 70 50 50 50 35 30 50 70 30 30]';
+mpc = set_linelimits(mpc,lineRatings);
+
 % return
 result_pf_pinj = zeros(numOfBuses,1);
 result_pf_pinj([busNumOfSlack;busNumOfPV]) = result_pf.gen(:,2) - result_pf.bus([busNumOfSlack;busNumOfPV],3);
@@ -85,6 +88,8 @@ x_opf(mpc.bus(:,2)~=1,1)
 [(1:14)', pg_opf, lb_p, ub_p, qg_opf, lb_q, ub_q, e_opf, f_opf, v_opf, deltadeg_opf]
 [[(1:numOfBuses)';(1:numOfBuses)';(1:numOfBuses)';(1:numOfBuses)'],x_opf,x0]
 
+lineflows = zeros(numOfBranches,2);
+
 for i = 1:numOfBranches
     fromBusIndex = mpc.branch(i,1);
     toBusIndex = mpc.branch(i,2);
@@ -100,7 +105,9 @@ for i = 1:numOfBranches
 end
 
 [mpc.branch(:,1), mpc.branch(:,2), mpc.branch(:,3), ...
-    result_pf.branch(:,14), result_opf.branch(:,14), 100* lineflows, 100* abs(lineflows(:,1) + lineflows(:,2))]
+    result_pf.branch(:,14), result_opf.branch(:,14), ...
+    mpc.baseMVA * lineflows(:,1), mpc.baseMVA * lineflows(:,2), ...
+    lineRatings]
 
 %% YALMIP 
 % [cost_yalmip, pg, qg] = solve_opf_yalmip(mpc);
