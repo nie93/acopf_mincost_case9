@@ -35,8 +35,8 @@ numOfBranches = size(mpc.branch,1);
 voltMax = mpc.bus(:,12);
 voltMin = mpc.bus(:,13);
 
-lineRatings = [100 50 100 35 50 50 50 50 50 50 70 50 50 50 35 30 50 70 30 30]';
-mpc = set_linelimits(mpc,lineRatings);
+% lineRatings = [100 50 100 35 50 50 50 50 50 50 70 50 50 50 35 30 50 70 30 30]';
+% mpc = set_linelimits(mpc,lineRatings);
 
 % return
 result_pf_pinj = zeros(numOfBuses,1);
@@ -104,10 +104,10 @@ for i = 1:numOfBranches
     lineflows(i,2) = [ej; ei; fj; fi]' * temp_mat * [ej; ei; fj; fi];
 end
 
-[mpc.branch(:,1), mpc.branch(:,2), mpc.branch(:,3), ...
-    result_pf.branch(:,14), result_opf.branch(:,14), ...
-    mpc.baseMVA * lineflows(:,1), mpc.baseMVA * lineflows(:,2), ...
-    lineRatings]
+% [mpc.branch(:,1), mpc.branch(:,2), mpc.branch(:,3), ...
+%     result_pf.branch(:,14), result_opf.branch(:,14), ...
+%     mpc.baseMVA * lineflows(:,1), mpc.baseMVA * lineflows(:,2), ...
+%     lineRatings]
 
 %% YALMIP 
 % [cost_yalmip, pg, qg] = solve_opf_yalmip(mpc);

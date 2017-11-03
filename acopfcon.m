@@ -24,7 +24,7 @@ function [c,ceq] = acopfcon(x,mpc)
     % Voltage Magnitudes
     for i = 1:numOfBuses
         c = [c; e(i)^2 + f(i)^2 - mpc.bus(i,12)^2];
-        c = [c; mpc.bus(i,13)^2 - e(i)^2 + f(i)^2];
+        c = [c; mpc.bus(i,13)^2 - e(i)^2 - f(i)^2];
     end
     
     % Power flow balance
